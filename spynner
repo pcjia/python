@@ -1,0 +1,25 @@
+import spynner
+import pyquery
+import time
+import BeautifulSoup
+ 
+browser = spynner.Browser()
+browser.create_webview()
+browser.set_html_parser(pyquery.PyQuery)
+browser.load("http://list.jd.com/list.html?cat=670,671,672", 20)
+ 
+try:
+    browser.wait_load(10)
+except:
+    pass
+ 
+string = browser.html
+browser.close()
+ 
+soup = BeautifulSoup.BeautifulSoup(string)
+time.sleep(2)
+ 
+tags1 = soup.findAll('div', {'class': 'lh-wrap'})
+ 
+for tag in tags1:
+    print tag.contents[2].contents[1]['id'], tag.contents[2].contents[0].text, "  ", tag.contents[1].contents[0].contents[0]
